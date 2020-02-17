@@ -1,0 +1,4 @@
+shinka/config.json
+
+node_modules/*
+!server/node_modules

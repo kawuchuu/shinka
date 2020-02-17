@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Shinka</title>
+        <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    </head>
+    <body>
+        <h1>Guilds</h1>
+        <ul class="guilds">
+            <guilds v-for="item in guilds" v-bind:guild="item" v-bind:key="item.id"></guilds>
+        </ul>
+        <a href="https://discordapp.com/oauth2/authorize?client_id=678413363759284245&permissions=8&scope=bot">add shinka</a>
+        <script src="/static/main.js"></script>
+    </body>
+</html>
