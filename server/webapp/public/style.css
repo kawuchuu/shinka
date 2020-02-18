@@ -1,0 +1,302 @@
+@font-face {
+    font-family: 'Overpass';
+    src: url('/static/overpass/overpass-regular.otf') format('opentype')
+}
+
+@font-face {
+    font-family: 'Overpass';
+    font-weight: bold;
+    src: url('/static/overpass/overpass-bold.otf') format('opentype')
+}
+
+@font-face {
+    font-family: 'Overpass';
+    font-weight: lighter;
+    src: url('/static/overpass/overpass-light.otf') format('opentype')
+
+}
+
+@font-face {
+    font-family: 'Questrial';
+    src: url('/static/Questrial-Regular.ttf') format('truetype');
+}
+
+html.dark {
+    --bg: #181818;
+    --text: #dfdfdf;
+    --fg-bg: #1e1e1e;
+    --bd: #3a3a3a;
+    --li-hv: #212121;
+    --logo: 0.9;
+    --switch: #3d3d3d;
+}
+
+html.nature {
+    --btn: #2c7700;
+    --btn-hover: #2dbd02;
+    --btn-active: #2cb900;
+    --handle: #47bf00;
+    --glow: rgba(59, 179, 27, 0.4);
+    --grad: linear-gradient(to right, #154a00, #47bf00);
+    --hl-txt: #3a9a01;
+    --hl-op: #399a0123;
+}
+
+body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Overpass', sans-serif;
+    margin: 0;
+    user-select: none;
+}
+
+.app {
+    position: fixed;
+    margin-top: 52px;
+    margin-left: 183px;
+    width: calc(100vw - 183px);
+    height: calc(100vh - 52px);
+    overflow-y: auto;
+}
+
+.tabs {
+    width: 100%;
+    height: calc(100% - 84px);
+}
+
+.section-name {
+    margin-left: 25px;
+}
+
+.hidden {
+    display: none;
+}
+
+/* top bar */
+.top-bar {
+    width: 100%;
+    height: 50px;
+    background-color: var(--fg-bg);
+    border-bottom: solid 2px var(--bd);
+    box-shadow: 0px 1px 5px rgba(0, 0, 0, .15);
+    position: fixed;
+    z-index: 3;
+}
+
+.top-bar-inner-container {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    margin: 0 15px;
+    justify-content: space-between;
+}
+
+.pj-info {
+    display: flex;
+    align-items: center;
+}
+
+.pj-info span {
+    font-weight: bold;
+    font-family: 'Questrial', sans-serrif;
+    font-size: 20px;
+    margin-left: 5px
+}
+
+.project-icon {
+    width: 20px;
+    height: 31px;
+    background-image: url('/static/shinka.svg');
+    background-size: cover;
+    margin: 0 7px 0 10px;
+    filter: brightness(var(--logo));
+}
+
+.top-button {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    margin-left: 20px;
+}
+
+.top-button:hover {
+    color: var(--hl-txt);
+    transform: scale(1.075);
+}
+
+.top-button i {
+    font-size: 20px;
+}
+
+.top-button span {
+    margin-top: 4px;
+    margin-left: 5px;
+    font-size: 14px;
+}
+
+.top-button-container {
+    display: flex;
+}
+
+/* sidebar */
+.side-bar {
+    width: 180px;
+    height: 100vh;
+    background: var(--fg-bg);
+    border-right: solid 2px var(--bd);
+    box-shadow: 1px 0px 5px rgba(0, 0, 0, .15);
+    position: fixed;
+    z-index: 2;
+}
+
+.side-bar-inner-container {
+    margin-top: 52px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow-y: auto;
+    height: calc(100% - 137px);
+}
+
+.side-bar-inner-container::-webkit-scrollbar {
+    display: none;
+}
+
+.side-bar button {
+    width: 155px;
+    height: 40px;
+    margin-top: 20px;
+}
+
+.type-separator {
+    width: 160px !important;
+    min-height: 1px;
+    background: var(--bd);
+    margin: 0 10px;
+    border-radius: 10px;
+}
+
+.item-sidebar {
+    display: flex;
+    width: 180px;
+    height: 50px;
+    align-items: center;
+    cursor: pointer;
+}
+
+.item-sidebar.active {
+    background-color: var(--hl-op);
+    color: var(--hl-txt);
+    cursor: default;
+}
+
+.item-sidebar:hover {
+    /* background-color: var(--hl-op); */
+    color: var(--hl-txt)
+}
+
+.item-sidebar:active {
+    opacity: 0.75;
+    color: var(--hl-txt)
+}
+
+.active-indicator {
+    width: 4px;
+    height: 50px;
+    background: var(--hl-txt);
+    position: relative;
+    display: none;
+    border-radius: 0 10px 10px 0;
+}
+
+.item-sidebar i {
+    margin: 0 18px;
+}
+
+.item-sidebar.active i {
+    margin: 0 18px 0 14px;
+}
+
+.item-sidebar.active span {
+    font-weight: bold;
+}
+
+.item-sidebar span {
+    font-size: 17px;
+    line-height: 1;
+    transform: translateY(1px);
+}
+
+/* overview */
+.overview-flex {
+    display: flex;
+    align-items: center;
+    padding-left: 25px;
+}
+
+.bot-avatar {
+    width: 100px;
+    height: 100px;
+    background-color: var(--fg-bg);
+    background-size: cover;
+    border-radius: 100px;
+}
+
+.bot-info {
+    margin-left: 30px;
+}
+
+.info-sect span {
+    font-weight: bold;
+}
+
+/* guilds */
+.guild-item {
+    width: 100%;
+    height: 100px;
+    display: flex;
+    align-items: center;
+}
+
+.guild-item:not(:last-child) {
+    border-bottom: solid 1px var(--bd);
+}
+
+.guild-icon {
+    width: 65px;
+    height: 65px;
+    background-color: var(--fg-bg);
+    border-radius: 100px;
+    margin: 0 20px;
+    background-size: cover;
+}
+
+.guild-name {
+    font-size: 26px;
+    font-weight: bold;
+}
+
+.guild-info {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.guild-owner {
+    display: flex;
+    align-items: center;
+}
+
+.owner-avatar {
+    width: 30px;
+    height: 30px;
+    background-color: var(--fg-bg);
+    border-radius: 30px;
+    background-size: cover;
+}
+
+.owner-name {
+    font-size: 14px;
+    margin: 0 10px;
+    opacity: .8;
+}
