@@ -34,11 +34,19 @@
             </div>
         </div>
         <div class="app">
+            <div class="err-msg-container hidden">
+                <div class="error-msg" v-bind:message="errMsg">{{errMsg}}</div>
+            </div>
             <h1 class="section-name" v-bind:message="sectionName">{{ sectionName }}</h1>
             <div class="tabs">
                 <div class="section overviewTab">
                     <div class="overview-flex">
-                        <div class="bot-avatar"></div>
+                        <div v-on:mouseover="hover" v-on:mouseleave="leave" class="bot-avatar">
+                            <input type="file" id="botAvatarUpdate" class="hidden" accept="image/*" onchange="updateAvatar(event)">
+                            <label class="bot-avatar-hover hidden" for="botAvatarUpdate">
+                                <span class="avatar-hover-txt">Change Avatar</span>
+                            </label>
+                        </div>
                         <div class="bot-info">
                             <div v-bind:message="name" class="info-sect"><span class="info-bold">Name: </span>{{name.name}}#{{name.discriminator}}</div>
                             <div v-bind:message="id" class="info-sect"><span class="info-bold">ID: </span>{{id}}</div>

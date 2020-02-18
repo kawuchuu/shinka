@@ -69,7 +69,31 @@ body {
 }
 
 .hidden {
-    display: none;
+    display: none !important;
+}
+
+.err-msg-container {
+    display: flex;
+    justify-content: center;
+    transform: none;
+    transition: .2s;
+}
+
+.err-msg-container.hidden {
+    transform: translateY(50px);
+}
+
+.error-msg {
+    width: calc(100vw - 250px);
+    max-width: 835px;
+    height: 20px;
+    background: #f04f43;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    position: fixed;
+    margin-top: 20px;
+    padding: 10px;
 }
 
 /* top bar */
@@ -242,6 +266,20 @@ body {
     border-radius: 100px;
 }
 
+.bot-avatar-hover {
+    background: rgba(0,0,0,.65);
+    height: 100%;
+    border-radius: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+
+.avatar-hover-txt {
+    text-align: center;
+}
+
 .bot-info {
     margin-left: 30px;
 }
@@ -273,7 +311,6 @@ body {
 
 .guild-name {
     font-size: 26px;
-    font-weight: bold;
 }
 
 .guild-info {

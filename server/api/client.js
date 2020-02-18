@@ -20,7 +20,30 @@ router.get('/', (req, res) => {
 })
 
 router.post('/updateAvatar', (req, res) => {
-    console.log(req.body);
+    let error = null;
+    console.log('Updating bot avatar...')
+    new Promise((resolve, reject) => {
+        setTimeout(() => {
+            reject('Error: Request timed out');
+        }, 30000);
+        bot.editSelf({avatar: req.body.image}).then(a => {
+            console.log('Updated bot avatar');
+        }).catch(err => {
+            console.log(err)
+            error = err.toString();
+            return 
+        }).then(() => {
+            if (error != null) {
+                res.status(429).send({err: error});
+            } else {
+                res.status(200).send({status: "OK"});
+            }
+            resolve();
+        });
+    }).catch(err => {
+        res.status(500).send({err: err});
+        console.log(err);
+    })
 });
 
 module.exports = router;

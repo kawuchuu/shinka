@@ -9,7 +9,7 @@ Vue.component('guilds', {
             return `background-image: url(${this.guild.icon})`;
         }
     },
-        template: `<div class="guild-item"><div class="guild-icon" v-bind:style="iconImg"></div><div class="guild-info"><span class="guild-name">{{guild.name}}</span><div class="guild-owner"><div class="owner-avatar" v-bind:style="avatarImg"></div><span class="owner-name">{{guild.owner}}</span></div></div></div>`
+    template: `<div class="guild-item"><div class="guild-icon" v-bind:style="iconImg"></div><div class="guild-info"><span class="guild-name">{{guild.name}}</span><div class="guild-owner"><div class="owner-avatar" v-bind:style="avatarImg"></div><span class="owner-name">{{guild.owner}}</span></div></div></div>`
 });
 
 let guildsCom = new Vue({
@@ -23,6 +23,13 @@ let sectionName = new Vue({
     el: '.section-name',
     data: {
         sectionName: 'Your Bot'
+    }
+})
+
+let errorMsg = new Vue({
+    el: '.error-msg',
+    data: {
+        errMsg: 'None'
     }
 })
 
@@ -136,4 +143,47 @@ let botInfo = new Vue({
         },
         id: 'id'
     }
-})
+});
+
+let botAvatarHover = new Vue({
+    el: '.bot-avatar',
+    methods: {
+        hover() {
+            document.querySelector('.bot-avatar-hover').classList.remove('hidden');
+        },
+        leave() {
+            document.querySelector('.bot-avatar-hover').classList.add('hidden');
+        }
+    }
+});
+
+let updateAvatar = (image) => {
+    let reader = new FileReader();
+    reader.onload = function() {
+        postAvatar(reader.result);
+    }
+    reader.readAsDataURL(image.target.files[0]);
+}
+
+let postAvatar = (image) => {
+    fetch('http://localhost:3000/api/client/updateAvatar', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({image: image})
+    }).then(response => {
+        return response.json();
+    }).then(result => {
+        if (result.status == 'OK') {
+            getBotInfo();
+        } else {
+            errorMsg.errMsg = result.err;
+            let errMsgPop = document.querySelector('.err-msg-container');
+            errMsgPop.classList.remove('hidden');
+            setTimeout(() => {
+                errMsgPop.classList.add('hidden');
+            }, 5000)
+        }
+    })
+}

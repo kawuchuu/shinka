@@ -7,7 +7,8 @@ const path = require('path');
 let api = require('./api/api');
 let webapp = require('./webapp/webapp');
 
-app.use(express.json());
+
+app.use(express.json({limit: '8mb'}));
 app.use(cors());
 app.use('/api', api);
 app.use('/webapp', webapp);
