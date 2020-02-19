@@ -84,9 +84,9 @@ body {
 }
 
 .error-msg {
-    width: calc(100vw - 250px);
-    max-width: 835px;
-    height: 20px;
+    width: auto;
+    max-width: calc(100vw - 250px);
+    height: auto;
     background: #f04f43;
     border-radius: 5px;
     display: flex;
@@ -284,8 +284,23 @@ body {
     margin-left: 30px;
 }
 
-.info-sect span {
+.info-bold {
     font-weight: bold;
+}
+
+.hidden-input:hover {
+    cursor: text;
+    opacity: .5;
+}
+
+.info-input {
+    background: var(--fg-bg);
+    border: solid 1px var(--bd);
+    color: var(--text);
+    padding: 5px 10px;
+    font-family: 'Overpass', sans-serif;
+    border-radius: 40px;
+    outline: none;
 }
 
 /* guilds */

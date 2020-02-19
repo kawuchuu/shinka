@@ -87,6 +87,39 @@ let getBotInfo = () => {
 };
 getBotInfo();
 
+let hideInput = el => {
+    el.target.classList.add('hidden');
+    let input = document.querySelector('.info-input');
+    input.value = botInfo.name.name;
+    input.classList.remove('hidden');
+}
+
+let updateUsername = (evt) => {
+    evt.target.classList.add('hidden');
+    document.querySelector('.hidden-input').classList.remove('hidden');
+    let name = evt.target.value;
+    fetch('http://localhost:3000/api/client/updateUsername', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({name: name})
+    }).then(response => {
+        return response.json();
+    }).then(result => {
+        if (result.status == 'OK') {
+            getBotInfo();
+        } else {
+            errorMsg.errMsg = result.err;
+            let errMsgPop = document.querySelector('.err-msg-container');
+            errMsgPop.classList.remove('hidden');
+            setTimeout(() => {
+                errMsgPop.classList.add('hidden');
+            }, 5000)
+        }
+    })
+}
+
 /* side bar buttons */
 Vue.component('side-buttons', {
     props: ['button'],

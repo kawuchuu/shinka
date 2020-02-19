@@ -24,17 +24,16 @@ router.post('/updateAvatar', (req, res) => {
     console.log('Updating bot avatar...')
     new Promise((resolve, reject) => {
         setTimeout(() => {
-            reject('Error: Request timed out');
-        }, 30000);
+            reject('Error: Request timed out. Are you changing your avatar too fast?');
+        }, 15000);
         bot.editSelf({avatar: req.body.image}).then(a => {
             console.log('Updated bot avatar');
         }).catch(err => {
             console.log(err)
             error = err.toString();
-            return 
         }).then(() => {
             if (error != null) {
-                res.status(429).send({err: error});
+                res.status(500).send({err: error});
             } else {
                 res.status(200).send({status: "OK"});
             }
@@ -45,5 +44,31 @@ router.post('/updateAvatar', (req, res) => {
         console.log(err);
     })
 });
+
+router.post('/updateUsername', (req, res) => {
+    let error = null;
+    console.log('Updating bot username...')
+    new Promise((resolve, reject) => {
+        setTimeout(() => {
+            reject('Error: Request timed out. Are you changing your username too fast?');
+        }, 10000);
+        bot.editSelf({username: req.body.name}).then(a => {
+            console.log('Updated bot username');
+        }).catch(err => {
+            console.log(err)
+            error = err.toString();
+        }).then(() => {
+            if (error != null) {
+                res.status(500).send({err: error});
+            } else {
+                res.status(200).send({status: "OK"});
+            }
+            resolve();
+        });
+    }).catch(err => {
+        res.status(500).send({err: err});
+        console.log(err);
+    })
+})
 
 module.exports = router;

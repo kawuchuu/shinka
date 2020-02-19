@@ -48,7 +48,10 @@
                             </label>
                         </div>
                         <div class="bot-info">
-                            <div v-bind:message="name" class="info-sect"><span class="info-bold">Name: </span>{{name.name}}#{{name.discriminator}}</div>
+                            <div v-bind:message="name" class="info-sect"><span class="info-bold">Name: </span>
+                                <span class="hidden-input" onclick="hideInput(event)">{{name.name}}</span>
+                                <input class="hidden info-input" onchange="updateUsername(event)" type="text" value="Bot">
+                                #{{name.discriminator}}</div>
                             <div v-bind:message="id" class="info-sect"><span class="info-bold">ID: </span>{{id}}</div>
                         </div>
                     </div>
