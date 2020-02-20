@@ -86,17 +86,22 @@ let getBotInfo = () => {
     })
     fetch('http://localhost:3001/status').then(resp => {
         let statusIcon = document.querySelector('.status-icon');
+        let statusIconEffect = document.querySelector('.status-icon-effect');
         if (resp.status != 200) {
             botInfo.online = 'Offline';
             statusIcon.classList.remove('online');
+            statusIconEffect.classList.remove('online');
         } else {
             botInfo.online = 'Online';
             statusIcon.classList.add('online');
+            statusIconEffect.classList.add('online');
         }
     }).catch(err => {
         let statusIcon = document.querySelector('.status-icon');
+        let statusIconEffect = document.querySelector('.status-icon-effect');
         botInfo.online = 'Offline';
         statusIcon.classList.remove('online');
+        statusIconEffect.classList.remove('online');
     })
 };
 getBotInfo();

@@ -53,11 +53,16 @@ body {
 .app {
     position: fixed;
     margin-top: 52px;
-    margin-left: 183px;
     width: calc(100vw - 183px);
-    max-width: 1280px;
+    max-width: 1130px;
     height: calc(100vh - 52px);
     overflow-y: auto;
+}
+
+.app-wrapper {
+    display: flex;
+    justify-content: center;
+    margin-left: 183px;
 }
 
 .tabs {
@@ -262,6 +267,7 @@ body {
 .bot-avatar {
     width: 100px;
     height: 100px;
+    min-width: 100px;
     background-color: var(--fg-bg);
     background-size: cover;
     border-radius: 100px;
@@ -309,7 +315,11 @@ body {
     align-items: center;
 }
 
-.status-icon {
+.status-indicate span {
+    margin-top: 4px;
+}
+
+.status-icon, .status-icon-effect {
     width: 10px;
     height: 10px;
     border-radius: 10px;
@@ -317,16 +327,51 @@ body {
     margin-right: 15px;
 }
 
-.status-icon.online {
+.status-icon.online, .status-icon-effect.online {
     background: #43b581;
+}
+
+.status-icon-effect {
+    position: absolute;
+    opacity: .75;
+    transform: scale(1);
+}
+
+.status-icon-effect.online {
+    animation: radar 4s infinite;
+    animation-delay: 2s;
+}
+
+@keyframes radar {
+    0% {
+        transform: scale(1);
+        opacity: .75;
+    }
+    25% {
+        transform: scale(2);
+        opacity: 0;
+    }
+    50% {
+        transform: scale(2);
+        opacity: 0;
+    }
+    75% {
+        transform: scale(2);
+        opacity: 0;
+    } 
+    100% {
+        transform: scale(2);
+        opacity: 0;
+    }
 }
 
 /* guilds */
 .guild-item {
-    width: 100%;
+    width: calc(100% - 30px);
     height: 100px;
     display: flex;
     align-items: center;
+    margin-left: 30px;
 }
 
 .guild-item:not(:last-child) {
@@ -339,7 +384,7 @@ body {
     min-width: 65px;
     background-color: var(--fg-bg);
     border-radius: 100px;
-    margin: 0 20px;
+    margin: 0 20px 0 0;
     background-size: cover;
 }
 
