@@ -59,9 +59,12 @@
                             </div>
                         </div>
                     </div>
+                    <div class="guilds">
+                        <h2>Guilds</h2>
+                        <guilds v-for="item in guilds" v-bind:guild="item" v-bind:key="item.id"></guilds>
+                    </div>
                 </div>
                 <div class="section guildsTab hidden">
-                    <guilds v-for="item in guilds" v-bind:guild="item" v-bind:key="item.id"></guilds>
                 </div>
             </div>
         </div>

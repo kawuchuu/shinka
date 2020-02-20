@@ -13,7 +13,7 @@ Vue.component('guilds', {
 });
 
 let guildsCom = new Vue({
-    el: '.guildsTab',
+    el: '.guilds',
     data: {
         guilds: []
     }
@@ -100,6 +100,7 @@ let getBotInfo = () => {
     })
 };
 getBotInfo();
+getGuildInfo();
 
 let hideInput = el => {
     el.target.classList.add('hidden');
@@ -172,9 +173,9 @@ let sideButtons = new Vue({
     el: '.nav-buttons',
     data: {
         section1: [
-            {'icon': 'info', 'name': 'Overview', 'id': 'overviewTab'},
-            {'icon': 'group', 'name': 'Guilds', 'id': 'guildsTab'}
-        ]
+            {'icon': 'info', 'name': 'Overview', 'id': 'overviewTab'}
+/*             {'icon': 'group', 'name': 'Guilds', 'id': 'guildsTab'}
+ */        ]
     }
 });
 
