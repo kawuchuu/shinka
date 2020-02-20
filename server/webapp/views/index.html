@@ -10,10 +10,6 @@
     <body>
         <div class="top-bar">
             <div class="top-bar-inner-container">
-                <div class="pj-info">
-                    <div class="project-icon"></div>
-                    <span>Shinka</span>
-                </div>
                 <div class="nav-top-buttons">
                     <div class="top-button-container">
                         <label class="top-button" onclick="window.open('https://discordapp.com/oauth2/authorize?client_id=678413363759284245&permissions=8&scope=bot')">
@@ -26,6 +22,10 @@
         </div>
         <div class="app-side-bar">
             <div class="side-bar">
+                <div class="pj-info">
+                    <div class="project-icon"></div>
+                    <span>Shinka</span>
+                </div>
                 <div class="side-bar-inner-container">
                     <div class="nav-buttons">
                         <side-buttons v-for="item in section1" v-bind:button="item" v-bind:key="item.id"></side-buttons>
