@@ -303,6 +303,23 @@ body {
     outline: none;
 }
 
+.status-indicate {
+    display: flex;
+    align-items: center;
+}
+
+.status-icon {
+    width: 10px;
+    height: 10px;
+    border-radius: 10px;
+    background: #747f8d;
+    margin-right: 15px;
+}
+
+.status-icon.online {
+    background: #43b581;
+}
+
 /* guilds */
 .guild-item {
     width: 100%;

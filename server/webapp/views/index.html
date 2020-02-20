@@ -53,6 +53,10 @@
                                 <input class="hidden info-input" onchange="updateUsername(event)" type="text" value="Bot">
                                 #{{name.discriminator}}</div>
                             <div v-bind:message="id" class="info-sect"><span class="info-bold">ID: </span>{{id}}</div>
+                            <div class="status-indicate">
+                                <div class="status-icon"></div>
+                                <span v-bind:message="online">{{online}}</span>
+                            </div>
                         </div>
                     </div>
                 </div>

@@ -84,6 +84,20 @@ let getBotInfo = () => {
             document.querySelector('.bot-avatar').style.backgroundImage = `url(${data.avatarURL})`
         })
     })
+    fetch('http://localhost:3001/status').then(resp => {
+        let statusIcon = document.querySelector('.status-icon');
+        if (resp.status != 200) {
+            botInfo.online = 'Offline';
+            statusIcon.classList.remove('online');
+        } else {
+            botInfo.online = 'Online';
+            statusIcon.classList.add('online');
+        }
+    }).catch(err => {
+        let statusIcon = document.querySelector('.status-icon');
+        botInfo.online = 'Offline';
+        statusIcon.classList.remove('online');
+    })
 };
 getBotInfo();
 
@@ -127,16 +141,13 @@ Vue.component('side-buttons', {
     methods: {
         click() {
             let tabClicked = this.$vnode.key;
-            
             document.querySelector('.item-sidebar.active .active-indicator').style.display = 'none';
             document.querySelector('.item-sidebar.active').classList.remove('active')
             this.$el.classList.add('active');
             document.querySelector('.item-sidebar.active .active-indicator').style.display = 'block';
-            console.log()
             document.querySelectorAll('.section').forEach(f => {
                 f.classList.add('hidden');
             });
-            console.log(tabClicked)
             document.querySelector(`.${tabClicked}`).classList.remove('hidden');
             switch(tabClicked) {
                 case "overviewTab":
@@ -174,7 +185,8 @@ let botInfo = new Vue({
             name: 'Bot',
             discriminator: '0000'
         },
-        id: 'id'
+        id: 'id',
+        online: 'Offline'
     }
 });
 
