@@ -80,7 +80,8 @@ let getBotInfo = () => {
         response.json().then(data => {
             botInfo.name.name = data.username;
             botInfo.name.discriminator = data.discriminator;
-            botInfo.id = data.id
+            botInfo.id = data.id;
+            shinkaVer.ver = `v${data.ver}`;
             document.querySelector('.bot-avatar').style.backgroundImage = `url(${data.avatarURL})`
         })
     })
@@ -178,11 +179,19 @@ let sideButtons = new Vue({
     el: '.nav-buttons',
     data: {
         section1: [
-            {'icon': 'info', 'name': 'Overview', 'id': 'overviewTab'}
-/*             {'icon': 'group', 'name': 'Guilds', 'id': 'guildsTab'}
- */        ]
+            {icon: 'info', name: 'Overview', id: 'overviewTab'},
+            {icon: 'code', name: 'Commands', id: 'commandsTab'},
+            {icon: 'help', name: 'Help & Info', id: 'helpTab'}
+        ]
     }
 });
+
+let shinkaVer = new Vue({
+    el: '.shinka-ver',
+    data: {
+        ver: 'v0.0.0'
+    }
+})
 
 let botInfo = new Vue({
     el: '.bot-info',

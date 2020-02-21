@@ -10,7 +10,8 @@ router.use('/', (req, res, next) => {
         username: bot.user.username,
         discriminator: bot.user.discriminator,
         id: bot.user.id,
-        avatarURL: bot.user.dynamicAvatarURL()
+        avatarURL: bot.user.dynamicAvatarURL(),
+        ver: require('../../package.json').version
     }
     next();
 });

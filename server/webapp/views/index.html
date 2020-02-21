@@ -25,11 +25,13 @@
                 <div class="pj-info">
                     <div class="project-icon"></div>
                     <span>Shinka</span>
+                    <div class="beta-tag">Beta</div>
                 </div>
                 <div class="side-bar-inner-container">
                     <div class="nav-buttons">
                         <side-buttons v-for="item in section1" v-bind:button="item" v-bind:key="item.id"></side-buttons>
                     </div>
+                    <div v-bind:message="ver" class="shinka-ver">Shinka {{ver}} by projsh_</div>
                 </div>
             </div>
         </div>
