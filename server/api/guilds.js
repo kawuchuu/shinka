@@ -27,6 +27,23 @@ router.use('/:id/member/:memId', (req, res, next) => {
         res.status(404).send();
     }
     next();
+});
+
+router.use('/:id/channel/:chanId', (req, res, next) => {
+    req.guild = bot.guilds.find(guild => {
+        return guild.id == req.params.id;
+    });
+    if (!req.guild) {
+        res.status(404).send();
+    }
+
+    req.channel = req.guild.channels.find(channel => {
+        return channel.id == req.params.chanId;
+    });
+    if (!req.channel) {
+        res.status(404).send();
+    }
+    next();
 })
 
 router.use('/', (req, res, next) => {
@@ -37,7 +54,7 @@ router.use('/', (req, res, next) => {
     }
     req.guilds = guildsList;
     next();
-})
+});
 
 router.get('/:id', (req, res) => {
     let guild = req.guild;
@@ -71,6 +88,14 @@ router.get('/:id/member/:memId', (req, res) => {
     }
     res.status(200).send(memberInfo);
 });
+
+router.post('/:id/channel/:chanId/sendMsg', (req, res) => {
+    let channel = req.channel.id;
+    let msg = req.body.msg;
+    console.log(msg)
+    bot.createMessage(channel, msg);
+    res.sendStatus(200);
+})
 
 router.get('/', (req, res) => {
     res.status(200).send(req.guilds);

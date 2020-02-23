@@ -4,18 +4,18 @@ const cors = require('cors');
 const app = express();
 
 let bot = new eris(require('./config.json').token);
+app.use(express.json({limit: '100kb'}));
+app.use(cors());
+app.listen(64342, err => {
+    if (err) return console.log('Failed to start express server!');
+    console.log('Express server started');
+})
 
 bot.on('ready', () => {
     console.log("connected to discord");
-    app.use(express.json({limit: '100kb'}));
-    app.use(cors());
     app.use('/status', (req, res) => {
         res.sendStatus(200);
     });
-    app.listen(3001, err => {
-        if (err) return console.log('Failed to start express server!');
-        console.log('Express server started');
-    })
 })
 
 bot.on('messageCreate', (msg) => {
@@ -30,6 +30,12 @@ bot.on('messageCreate', (msg) => {
             });
             break;
     }
+})
+
+process.on("SIGINT", () => {
+    bot.editStatus('invisible')
+    bot.disconnect({reconnect: false});
+    process.exit(0);
 })
 
 bot.connect();

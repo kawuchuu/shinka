@@ -9,7 +9,16 @@ Vue.component('guilds', {
             return `background-image: url(${this.guild.icon})`;
         }
     },
-    template: `<div class="guild-item"><div class="guild-icon" v-bind:style="iconImg"></div><div class="guild-info"><span class="guild-name">{{guild.name}}</span><div class="guild-owner"><div class="owner-avatar" v-bind:style="avatarImg"></div><span class="owner-name">{{guild.owner}}</span></div></div></div>`
+    template: `<div class="guild-item" v-on:click="click"><div class="guild-icon" v-bind:style="iconImg"></div><div class="guild-info"><span class="guild-name">{{guild.name}}</span><div class="guild-owner"><div class="owner-avatar" v-bind:style="avatarImg"></div><span class="owner-name">{{guild.owner}}</span></div></div></div>`,
+    methods: {
+        click() {
+            document.querySelectorAll('.section').forEach(f => {
+                f.classList.add('hidden');
+            });
+            sectionName.sectionName = this.guild.name
+            document.querySelector(`.guildTab`).classList.remove('hidden');
+        }
+    }
 });
 
 let guildsCom = new Vue({
@@ -58,7 +67,8 @@ let getGuildInfo = () => {
                                     name: guildData.name,
                                     icon: guildData.iconURL,
                                     owner: `${memberData.name}#${memberData.discriminator}`,
-                                    ownerAvatarURL: memberData.avatarURL
+                                    ownerAvatarURL: memberData.avatarURL,
+                                    id: f
                                 });
                             })
                         })
@@ -85,7 +95,7 @@ let getBotInfo = () => {
             document.querySelector('.bot-avatar').style.backgroundImage = `url(${data.avatarURL})`
         })
     })
-    fetch('http://localhost:3001/status').then(resp => {
+    fetch('http://localhost:64342/status').then(resp => {
         let statusIcon = document.querySelector('.status-icon');
         let statusIconEffect = document.querySelector('.status-icon-effect');
         if (resp.status != 200) {
@@ -161,9 +171,12 @@ Vue.component('side-buttons', {
                     sectionName.sectionName = 'Your Bot';
                     getBotInfo();
                     break;
-                case "guildsTab":
-                    sectionName.sectionName = 'Guilds';
-                    getGuildInfo();
+                case "commandsTab":
+                    sectionName.sectionName = 'Commands';
+                    break;
+                case "helpTab":
+                    sectionName.sectionName = 'Help & Info';
+                    break;
             }
         }
     },
@@ -187,7 +200,7 @@ let sideButtons = new Vue({
 });
 
 let shinkaVer = new Vue({
-    el: '.shinka-ver',
+    el: '.shinka-info',
     data: {
         ver: 'v0.0.0'
     }

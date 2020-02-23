@@ -52,12 +52,38 @@ html.nature {
     --hl-op: #399a0123;
 }
 
+html.acnh {
+    --hl-txt: #179e88;
+    --hl-op: #5adbc534;
+}
+
 body {
     background: var(--bg);
     color: var(--text);
     font-family: 'Overpass', sans-serif;
     margin: 0;
     user-select: none;
+}
+
+.bg {
+    width: 100vw;
+    height: 100vh;
+    position: fixed;
+    z-index: -1;
+    background-image: url(/static/bg.png);
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    opacity: .25;
+}
+
+.link {
+    color: var(--hl-txt);
+    cursor: pointer;
+}
+
+.link:hover {
+    opacity: .5;
 }
 
 .app {
@@ -149,13 +175,16 @@ body {
     border: solid 2px var(--text);
     padding: 3px 6px 0px 6px;
     border-radius: 25px;
+    opacity: .75;
 }
 
 .project-icon {
     width: 25px;
     height: 41px;
     background-image: url('/static/shinka.svg');
-    background-size: cover;
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
     margin: 0 7px 0 0;
     filter: brightness(var(--logo));
 }
@@ -191,8 +220,8 @@ body {
 .side-bar {
     width: 260px;
     height: 100vh;
-    background: var(--fg-bg);
-    border-right: solid 2px var(--bd);
+    background: rgba(255, 255, 255, .25);
+    backdrop-filter: blur(10px);
     box-shadow: 1px 0px 5px rgba(0, 0, 0, .15);
     position: fixed;
     z-index: 2;
@@ -277,10 +306,10 @@ body {
     transform: translateY(1px);
 }
 
-.shinka-ver {
-    font-size: 14px;
+.shinka-info {
+    font-size: 12px;
     opacity: .5;
-    padding: 5px;
+    padding: 15px;
 }
 
 /* overview */
@@ -297,20 +326,24 @@ body {
     background-color: var(--fg-bg);
     background-size: cover;
     border-radius: 100px;
+    box-shadow: 0px 0px 5px rgba(0, 0, 0, .25);
 }
 
 .bot-avatar-hover {
-    background: rgba(0,0,0,.65);
+    background: rgba(0,0,0,.35);
+    backdrop-filter: blur(5px);
     height: 100%;
     border-radius: 100px;
     display: flex;
     justify-content: center;
     align-items: center;
     cursor: pointer;
+    transition: .2s;
 }
 
 .avatar-hover-txt {
     text-align: center;
+    color: #ffffff;
 }
 
 .bot-info {
@@ -399,6 +432,11 @@ body {
     display: flex;
     align-items: center;
     margin-left: 30px;
+    cursor: pointer;
+}
+
+.guild-item:hover {
+    background: var(--li-hv);
 }
 
 .guild-item:not(:last-child) {
@@ -411,7 +449,7 @@ body {
     min-width: 65px;
     background-color: var(--fg-bg);
     border-radius: 100px;
-    margin: 0 20px 0 0;
+    margin: 0 20px;
     background-size: cover;
 }
 
