@@ -44,20 +44,20 @@ let errorMsg = new Vue({
 
 let getGuildInfo = () => {
     guildsCom.guilds = [];
-    fetch('http://localhost:3000/api/guilds').then(response => {
+    fetch(`http://${window.location.hostname}:3000/api/guilds`).then(response => {
         if (response.status != 200) {
             console.log(`Unable to fetch guilds! Status: ${response.status}`);
             return;
         }
         response.json().then(data => {
             data.forEach((f, i) => {
-                fetch(`http://localhost:3000/api/guilds/${f}`).then(resp => {
+                fetch(`http://${window.location.hostname}:3000/api/guilds/${f}`).then(resp => {
                     if (resp.status != 200) {
                         console.log(`Unable to fetch guild data! Status: ${resp.status}`);
                         return;
                     }
                     resp.json().then(guildData => {
-                        fetch(`http://localhost:3000/api/guilds/${f}/member/${guildData.ownerID}`).then(userResp => {
+                        fetch(`http://${window.location.hostname}:3000/api/guilds/${f}/member/${guildData.ownerID}`).then(userResp => {
                             if (userResp.status != 200) {
                                 console.log(`Unable to fetch guild owner data! Status: ${userResp.status}`);
                                 return;
@@ -82,7 +82,7 @@ let getGuildInfo = () => {
 }
 
 let getBotInfo = () => {
-    fetch('http://localhost:3000/api/client').then(response => {
+    fetch(`http://${window.location.hostname}:3000/api/client`).then(response => {
         if (response.status != 200) {
             console.log('Unable to get client info!');
             return;
@@ -95,7 +95,7 @@ let getBotInfo = () => {
             document.querySelector('.bot-avatar').style.backgroundImage = `url(${data.avatarURL})`
         })
     })
-    fetch('http://localhost:64342/status').then(resp => {
+    fetch(`http://${window.location.hostname}:64342/status`).then(resp => {
         let statusIcon = document.querySelector('.status-icon');
         let statusIconEffect = document.querySelector('.status-icon-effect');
         if (resp.status != 200) {
@@ -129,7 +129,7 @@ let updateUsername = (evt) => {
     evt.target.classList.add('hidden');
     document.querySelector('.hidden-input').classList.remove('hidden');
     let name = evt.target.value;
-    fetch('http://localhost:3000/api/client/updateUsername', {
+    fetch(`http://${window.location.hostname}:3000/api/client/updateUsername`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -165,6 +165,7 @@ Vue.component('side-buttons', {
             document.querySelectorAll('.section').forEach(f => {
                 f.classList.add('hidden');
             });
+            mobileMenu.openclose();
             document.querySelector(`.${tabClicked}`).classList.remove('hidden');
             switch(tabClicked) {
                 case "overviewTab":
@@ -206,6 +207,32 @@ let shinkaVer = new Vue({
     }
 })
 
+let mobileMenu = new Vue({
+    el: '.mobile-menu',
+    methods: {
+        openclose() {
+            let sidebar = document.querySelector('.app-side-bar');
+            let menuAppear = document.querySelector('.menu-appear');
+            if (this.active == false) {
+                sidebar.classList.add('active');
+                menuAppear.classList.add('active');
+                this.active = true
+            } else {
+                sidebar.classList.remove('active');
+                menuAppear.classList.remove('active');
+                this.active = false;
+            }
+        }
+    },
+    data: {
+        active: false
+    }
+});
+
+document.querySelector('.menu-appear').addEventListener('click', () => {
+    mobileMenu.openclose();
+})
+
 let botInfo = new Vue({
     el: '.bot-info',
     data: {
@@ -239,7 +266,7 @@ let updateAvatar = (image) => {
 }
 
 let postAvatar = (image) => {
-    fetch('http://localhost:3000/api/client/updateAvatar', {
+    fetch(`http://${window.location.hostname}:3000/api/client/updateAvatar`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
