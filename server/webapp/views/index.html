@@ -66,7 +66,7 @@
                                 <div v-bind:message="id" class="info-sect"><span class="info-bold">ID: </span>{{id}}</div>
                                 <div class="status-indicate">
                                     <div class="status-icon"></div>
-                                    <div class="status-icon-effect online"></div>
+                                    <div class="status-icon-effect"></div>
                                     <span v-bind:message="online">{{online}}</span>
                                 </div>
                             </div>
@@ -79,7 +79,20 @@
                     <div class="section commandsTab hidden"></div>
                     <div class="section helpTab hidden"></div>
                     <div class="section guildTab hidden">
-                        
+                        <div class="overview-flex">
+                            <div class="bot-avatar guild-icon-main"></div>
+                            <div class="bot-info guild">
+                                <div v-bind:message="id" class="info-sect guild"><span class="info-bold">ID: </span>{{id}}</div>
+                                <div v-bind:message="owner" class="info-sect guild"><span class="info-bold">Owner: </span>{{owner.name}}</div>
+                                <div v-bind:message="owner" class="info-sect guild"><span class="info-bold">Owner ID: </span>{{owner.id}}</div>
+                            </div>
+                        </div>
+                        <div class="members">
+                            <h2>Members</h2>
+                            <div class="members-list">
+                                <members v-for="item in members" v-bind:member="item" v-bind:key="item.id"></members>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

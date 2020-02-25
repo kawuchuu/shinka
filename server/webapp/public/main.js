@@ -12,14 +12,77 @@ Vue.component('guilds', {
     template: `<div class="guild-item" v-on:click="click"><div class="guild-icon" v-bind:style="iconImg"></div><div class="guild-info"><span class="guild-name">{{guild.name}}</span><div class="guild-owner"><div class="owner-avatar" v-bind:style="avatarImg"></div><span class="owner-name">{{guild.owner}}</span></div></div></div>`,
     methods: {
         click() {
+            membersList.members = [];
             document.querySelectorAll('.section').forEach(f => {
                 f.classList.add('hidden');
             });
-            sectionName.sectionName = this.guild.name
+            fetch(`http://${window.location.hostname}:3000/api/guilds/${this.guild.id}/members`).then(response => {
+                if (response.status != 200) {
+                    return console.log('Unable to fetch members!')
+                }
+                response.json().then(data => {
+                    data.forEach(f => {
+                        let nickname = "shinkaNoNickname";
+                        let avatar = `https://cdn.discordapp.com/avatars/${f.user.id}/${f.user.avatar}.png`;
+                        if (f.nick) {
+                            nickname = f.nick;
+                        }
+                        if (f.user.avatar == null) {
+                            avatar = `https://cdn.discordapp.com/embed/avatars/${f.user.discriminator % 5}.png`
+                        }
+                        membersList.members.push({
+                            name: f.user.username,
+                            discriminator: f.user.discriminator,
+                            userId: f.user.id,
+                            nickname: nickname,
+                            avatar: avatar
+                        })
+                    })
+                    simpleSort(membersList.members, 'name');
+                })
+            })
+            sectionName.sectionName = this.guild.name;
+            guildInfo.owner.name = this.guild.owner;
+            guildInfo.owner.id = this.guild.ownerId;
+            guildInfo.id = this.guild.id;
+            document.querySelector('.guild-icon-main').style.backgroundImage = `url('${this.guild.icon}')`
             document.querySelector(`.guildTab`).classList.remove('hidden');
         }
     }
 });
+
+Vue.component('members', {
+    props: ['member'],
+    computed: {
+        avatarImg() {
+            return `background-image: url('${this.member.avatar}')`; 
+        },
+        checkNick() {
+            if (this.member.nickname == 'shinkaNoNickname') {
+                return 'display: none;'
+            }
+        }
+    },
+    template: '<div class="member-item"><div class="members-container"><div class="member-avatar" v-bind:style="avatarImg"></div><div class="member-info"><span class="member-username">{{member.name}}#{{member.discriminator}}</span><span class="member-bold" v-bind:style="checkNick">Nickname: <span>{{member.nickname}}</span></span><span class="member-bold">ID: <span>{{member.userId}}</span></span></div></div></div>'
+})
+
+let membersList = new Vue({
+    el: '.members-list',
+    data: {
+        members: []
+    }
+})
+
+let guildInfo = new Vue({
+    el: '.bot-info.guild',
+    data: {
+        owner: {
+            name: 'Owner#0000',
+            id: 'owner id'
+        },
+        id: "id"
+    }
+})
 
 let guildsCom = new Vue({
     el: '.guilds',
@@ -67,9 +130,12 @@ let getGuildInfo = () => {
                                     name: guildData.name,
                                     icon: guildData.iconURL,
                                     owner: `${memberData.name}#${memberData.discriminator}`,
+                                    ownerId: guildData.ownerID,
                                     ownerAvatarURL: memberData.avatarURL,
-                                    id: f
+                                    id: f,
+                                    memberCount: guildData.memberCount
                                 });
+                                simpleSort(guildsCom.guilds, 'name');
                             })
                         })
                     })
@@ -117,6 +183,14 @@ let getBotInfo = () => {
 };
 getBotInfo();
 getGuildInfo();
+
+let simpleSort = (array, sortBy) => {
+    function compare(a, b) {
+        if (a[sortBy].toLowerCase() < b[sortBy].toLowerCase()) return -1;
+        if (a[sortBy].toLowerCase() > b[sortBy].toLowerCase()) return 1;
+    }
+    return array.sort(compare);
+}
 
 let hideInput = el => {
     el.target.classList.add('hidden');

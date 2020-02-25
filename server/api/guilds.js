@@ -12,6 +12,22 @@ router.use('/:id', (req, res, next) => {
     next();
 });
 
+router.use('/:id/members', (req, res, next) => {
+    req.guild = bot.guilds.find(guild => {
+        return guild.id == req.params.id;
+    });
+    if (!req.guild) {
+        res.status(404).send();
+    }
+    let membersKey = req.guild.members.entries();
+    let members = [];
+    for (let member of req.guild.members) {
+        members.push(member[1])
+    }
+    req.members = members;
+    next();
+});
+
 router.use('/:id/member/:memId', (req, res, next) => {
     req.guild = bot.guilds.find(guild => {
         return guild.id == req.params.id;
@@ -69,6 +85,12 @@ router.get('/:id', (req, res) => {
         unavailable: guild.unavailable
     };
     res.status(200).send(guildInfo);
+});
+
+router.get('/:id/members', (req, res) => {
+    let members = req.members;
+    if (!members) return;
+    res.status(200).send(members);
 });
 
 router.get('/:id/member/:memId', (req, res) => {
