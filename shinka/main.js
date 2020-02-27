@@ -2,6 +2,7 @@ const eris = require('eris');
 const express = require('express');
 const cors = require('cors');
 const app = express();
+const fs = require('fs');
 
 let bot = new eris(require('./config.json').token);
 app.use(express.json({limit: '100kb'}));
@@ -18,17 +19,35 @@ bot.on('ready', () => {
     });
 })
 
+fs.readdir('./modules', (err, files) => {
+    bot.commands = {};
+    if (err) {
+        return console.log(err);
+    }
+    files.forEach(f => {
+        let mod;
+        if (fs.lstatSync(`./modules/${f}`).isDirectory()) {
+            fs.readdirSync(`./modules/${f}`).forEach(submod => {
+                mod = require(`./modules/${f}/${submod}`);
+                if (mod.notCommand) return;
+                bot.commands[submod.substr(0, submod.length - 3)] = mod;
+            })
+        } else {
+            if (mod.notCommand) return;
+            mod = require(`./modules/${f}`)
+            bot.commands[f.substr(0, f.length - 3)] = mod;
+        }
+    })
+    console.log(bot.commands);
+})
+
 bot.on('messageCreate', (msg) => {
-    let args = msg.content.split(' ');
-    switch(args[0]) {
-        case "sh!ping":
-            bot.createMessage(msg.channel.id, "pong yeah im working fuck off")
-            break;
-        case "sh!echo":
-            bot.createMessage(msg.channel.id, `${msg.content.substr(8)}`).catch(err => {
-                console.log(err);
-            });
-            break;
+    if (!msg.content.startsWith('sh!')) return;
+    let args = msg.content.split(' ').slice(1);
+    let reqCmd = msg.content.split(' ')[0].substr(3);
+    let command = bot.commands[reqCmd];
+    if (command) {
+        command.run(bot, msg, args)
     }
 })
 
