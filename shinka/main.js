@@ -33,8 +33,8 @@ fs.readdir('./modules', (err, files) => {
                 bot.commands[submod.substr(0, submod.length - 3)] = mod;
             })
         } else {
+            mod = require(`./modules/${f}`);
             if (mod.notCommand) return;
-            mod = require(`./modules/${f}`)
             bot.commands[f.substr(0, f.length - 3)] = mod;
         }
     })

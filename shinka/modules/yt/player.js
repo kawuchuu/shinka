@@ -1,10 +1,11 @@
 const ytdl = require('ytdl-core');
-let serverQueue = {};
+let serverQueue = {np: null};
 
 let play = (connection, msg, bot) => {
     let server = serverQueue[msg.member.guild.id];
-    let stream = ytdl(server.queue[0]);
+    let stream = ytdl(server.queue[0].url);
     connection.play(stream);
+    server.np = server.queue[0];
     server.queue.shift();
     server.dispatcher = connection;
     server.dispatcher.once('end', () => {
@@ -20,6 +21,7 @@ let play = (connection, msg, bot) => {
         stream.destroy();
         server.dispatcher.stopPlaying();
         console.log(err);
+        bot.createMessage(msg.channel.id, `Unfortunately, an error occurred.\nDetails: \`${err}\`\nThis error was logged to the console.`)
         if (server.queue[0]) {
             play(connection, msg, bot);
         } else {
