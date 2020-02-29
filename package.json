@@ -14,6 +14,6 @@
     "express": "~4.16.1",
     "node-opus": "^0.3.3",
     "simple-youtube-api": "^5.2.1",
-    "ytdl-core": "^2.0.0"
+    "ytdl-core": "1.0.9"
   }
 }

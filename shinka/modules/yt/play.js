@@ -10,21 +10,18 @@ module.exports.run = async (bot, msg) => {
         let getMsg = await bot.createMessage(msg.channel.id, 'getting video from youtube...');
         try {
             yt.searchVideos(msg.content.substr(8), 2).then(results => {
-                ytdl.getInfo(results[0].url, (err, info) => {
-                    if (err) return console.log(err);
-                    if (!player.serverQueue[msg.member.guild.id]) {
-                        player.serverQueue[msg.member.guild.id] = {
-                            queue: []
-                        }
+                if (!player.serverQueue[msg.member.guild.id]) {
+                    player.serverQueue[msg.member.guild.id] = {
+                        queue: []
                     }
-                    player.serverQueue[msg.member.guild.id].queue.push(results[0].url);
-                    if (!connection.playing) {
-                        player.play(connection, msg, bot);
-                        bot.editMessage(msg.channel.id, getMsg.id, `now playing: ${info.title} by ${info.author.name}`);
-                    } else {
-                        bot.editMessage(msg.channel.id, getMsg.id, `added to queue: ${info.title} by ${info.author.name}`);
-                    }
-                })
+                }
+                player.serverQueue[msg.member.guild.id].queue.push(results[0].url);
+                if (!connection.playing) {
+                    player.play(connection, msg, bot);
+                    bot.editMessage(msg.channel.id, getMsg.id, `now playing: ${results[0].title}`);
+                } else {
+                    bot.editMessage(msg.channel.id, getMsg.id, `added to queue: ${results[0].title}`);
+                }
             })
         } catch(err) {
             console.log(err);

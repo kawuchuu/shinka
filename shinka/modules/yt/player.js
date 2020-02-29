@@ -23,7 +23,6 @@ let play = (connection, msg, bot) => {
         if (server.queue[0]) {
             play(connection, msg, bot);
         } else {
-            connection.stopPlaying();
             bot.leaveVoiceChannel(server.dispatcher.channelID);
         }
     })
