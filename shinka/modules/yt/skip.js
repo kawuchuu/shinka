@@ -1,11 +1,17 @@
 let player = require('./player');
 
 module.exports.run = async (bot, msg) => {
-    let nextTrack = player.serverQueue[msg.member.guild.id].queue[0];
-    if (!nextTrack) {
-        bot.createMessage(msg.channel.id, 'Nothing left to skip. Leaving voice channel...');
+    if (player.serverQueue[msg.guild.id].length == 0) {
+        msg.channel.send('Nothing left to skip. Leaving voice channel...');
+        msg.member.voice.channel.leave();
     } else {
-        bot.createMessage(msg.channel.id, `Skipped a track.\n**Now Playing:** ${nextTrack.title}`)
+        player.serverQueue[msg.guild.id].dispatcher.end();
+        msg.channel.send(`Skipped a track.`);
     }
-    player.serverQueue[msg.member.guild.id].dispatcher.stopPlaying();
+}
+
+module.exports.help = {
+    name: 'skip',
+    category: 'YouTube',
+    desc: 'Skips to the next video in the queue'
 }

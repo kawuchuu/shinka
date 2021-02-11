@@ -11,7 +11,7 @@ let webapp = require('./webapp/webapp');
 app.use(express.json({limit: '8mb'}));
 app.use(cors());
 app.use('/api', api);
-app.use('/webapp', webapp);
+app.use('/', webapp);
 app.use('/static', express.static(path.join(__dirname, '/webapp/public')));
 
 app.set('views', path.join(__dirname, '/webapp/views'));

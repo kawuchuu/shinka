@@ -3,10 +3,10 @@ const ytapi = require('simple-youtube-api');
 const yt = new ytapi(require('../../config.json').ytkey);
 
 module.exports.run = async (bot, msg) => {
-    bot.joinVoiceChannel(msg.member.voiceState.channelID).catch(err => {
+    msg.member.voice.channel.join().catch(err => {
         console.log(err);
     }).then(async connection => {
-        let getMsg = await bot.createMessage(msg.channel.id, 'Searching YouTube...');
+        let getMsg = await msg.channel.send('Searching YouTube...');
         try {
             yt.searchVideos(msg.content.substr(8), 2).then(results => {
                 if (!player.serverQueue[msg.member.guild.id]) {
@@ -14,21 +14,35 @@ module.exports.run = async (bot, msg) => {
                         queue: []
                     }
                 }
-                player.serverQueue[msg.member.guild.id].queue.push({
-                    url: results[0].url,
-                    title: results[0].title,
-                    channel: results[0].channel.title,
-                    thumbnail: results[0].thumbnails.medium.url
-                });
-                if (!connection.playing) {
-                    player.play(connection, msg, bot);
-                    bot.editMessage(msg.channel.id, getMsg.id, `**Now Playing:** ${results[0].title}`);
-                } else {
-                    bot.editMessage(msg.channel.id, getMsg.id, `**Added to queue:** ${results[0].title}`);
-                }
+                //so we can get the duration...
+                yt.getVideoByID(results[0].id).then(video => {
+                    player.serverQueue[msg.member.guild.id].queue.push({
+                        url: video.url,
+                        title: video.title,
+                        channel: video.channel.title,
+                        channelUrl: video.channel.url,
+                        thumbnail: video.thumbnails.high.url,
+                        duration: parseInt(video.durationSeconds),
+                        durationDisplay: `${video.duration.minutes}:${video.duration.seconds}`
+                    });
+                    if (!player.serverQueue[msg.member.guild.id].np) {
+                        player.play(connection, msg, bot);
+                        getMsg.edit(`**Now Playing:** ${results[0].title}`);
+                    } else {
+                        getMsg.edit(`**Added to queue:** ${results[0].title}`);
+                    }
+                    console.log(video.durationSeconds);
+                })
             })
         } catch(err) {
             console.log(err);
         }
     })
+}
+
+module.exports.help = {
+    name: 'play',
+    category: 'YouTube',
+    args: '<search query>',
+    desc: 'Plays the first search result in a voice channel'
 }

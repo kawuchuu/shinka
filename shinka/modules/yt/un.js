@@ -2,8 +2,8 @@ let player = require('./player');
 
 module.exports.run = async (bot, msg) => {
     let upNext = player.serverQueue[msg.member.guild.id].queue[0];
-    if (!upNext) return bot.createMessage(msg.channel.id, 'Nothing up next!');
-    bot.createMessage(msg.channel.id, {
+    if (!upNext) return msg.channel.send('Nothing up next!');
+    msg.channel.send({
         embed: {
             title: ":track_next:  Up Next",
             color: 0xff0000,
@@ -14,8 +14,7 @@ module.exports.run = async (bot, msg) => {
                 },
                 {
                     name: 'Channel',
-                    value: upNext.channel,
-
+                    value: `[${upNext.channel}](${upNext.channelUrl})`
                 },
                 {
                     name: 'Link',
@@ -27,4 +26,10 @@ module.exports.run = async (bot, msg) => {
             }
         }
     })
+}
+
+module.exports.help = {
+    name: 'upnext [un]',
+    category: 'YouTube',
+    desc: 'Displays info about the video next in queue'
 }

@@ -1,7 +1,15 @@
 let player = require('./player');
 
 module.exports.run = async (bot, msg) => {
-    bot.createMessage(msg.member.guild.id, 'Leaving voice channel...');
-    player.serverQueue[msg.member.guild.id].queue = [];
-    bot.leaveVoiceChannel(player.serverQueue[msg.member.guild.id].dispatcher.channelID);
+    msg.channel.send('Leaving voice channel...');
+    let server = player.serverQueue[msg.member.guild.id]
+    server.queue = [];
+    server.np = null;
+    server.connection.channel.leave();
+}
+
+module.exports.help = {
+    name: 'stop',
+    category: 'YouTube',
+    desc: 'Stops playing a video and leaves the voice channel'
 }

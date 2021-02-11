@@ -10,7 +10,7 @@ module.exports.run = async (bot, msg) => {
             queueList += `${i + 1}. ${f.title}\n`;
         })
     }
-    bot.createMessage(msg.channel.id, {
+    msg.channel.send({
         embed: {
             title: ':notepad_spiral:  Queue',
             color: 0xff0000,
@@ -26,4 +26,10 @@ module.exports.run = async (bot, msg) => {
             ]
         }
     })
+}
+
+module.exports.help = {
+    name: 'queue',
+    category: 'YouTube',
+    desc: "Displays the server's YouTube queue"
 }
