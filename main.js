@@ -75,13 +75,6 @@ bot.on('message', msg => {
     let command = bot.commands[reqCmd];
     if (command) {
         command.run(bot, msg, args)
-    } else {
-        if (fs.existsSync(`./img/${reqCmd}.jpg`)) {
-            msg.channel.send({files: [{
-                attachment: `./img/${reqCmd}.jpg`,
-                name: `${reqCmd}.jpg`
-            }]})
-        }
     }
 })
 

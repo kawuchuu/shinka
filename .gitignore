@@ -1,5 +1,4 @@
-shinka/config.json
-shinka/ffmpeg.exe
+config.json
+ffmpeg.exe
 
 node_modules/*
-!server/node_modules
