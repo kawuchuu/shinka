@@ -1,7 +1,5 @@
 # Shinka
-an experimental discord bot. evolution of cerium. this project is primarily meant to help me learn how to create an api and web app, so expect stupid mistakes.
 
-## important info!
-- node-opus is **STRONGLY** recommended over opusscript, as it's more stable and faster.
-- ffmpeg may be required for voice support.
-- i do not gurantee stability or security in the project's current state. please use at your own risk.
+The bot itself. You can run this bot by simply typing `node main.js`
+
+More info for this README to come

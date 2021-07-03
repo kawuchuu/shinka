@@ -1,4 +1,4 @@
 config.json
-ffmpeg.exe
+package-lock.json
 
-node_modules/*
+node_modules

@@ -4,7 +4,25 @@ const express = require('express');
 const cors = require('cors');
 const app = express();
 const fs = require('fs');
+const path = require('path');
+bot.isElectron = true;
 bot.help = {};
+
+try {
+    console.log(`Testing for Electron: ${require('electron').app.getVersion()}`)
+    console.log('Electron appears to be present!')
+} catch(e) {
+    bot.isElectron = false;
+    console.log('Electron is not present!')
+}
+
+let moduleDir = './modules';
+
+if (bot.isElectron && process.env.NODE_ENV === 'development') {
+    moduleDir = path.resolve(__dirname, '../shinka/modules')
+} else if (bot.isElectron) {
+    moduleDir = `${require('electron').app.getAppPath()}/shinka/modules`;
+}
 
 bot.login(require('./config.json').token);
 app.use(express.json({limit: '100kb'}));
@@ -22,19 +40,19 @@ bot.on('ready', () => {
     bot.user.setActivity('in development uwu', { type: 'PLAYING' });
 })
 
-fs.readdir('./modules', (err, files) => {
+fs.readdir(moduleDir, (err, files) => {
     bot.commands = {};
     if (err) {
         return console.log(err);
     }
     files.forEach(f => {
         let mod;
-        let isDirectory = fs.lstatSync(`./modules/${f}`).isDirectory();
+        let isDirectory = fs.lstatSync(`${moduleDir}/${f}`).isDirectory();
         if (!f.endsWith('.js') && !isDirectory) return;
         if (isDirectory) {
-            fs.readdirSync(`./modules/${f}`).forEach(submod => {
+            fs.readdirSync(`${moduleDir}/${f}`).forEach(submod => {
                 if (!submod.endsWith('.js')) return;
-                mod = require(`./modules/${f}/${submod}`);
+                mod = require(`${moduleDir}/${f}/${submod}`);
                 if (mod.notCommand) return;
                 bot.commands[submod.substr(0, submod.length - 3)] = mod;
                 if (mod.help) {
@@ -49,7 +67,7 @@ fs.readdir('./modules', (err, files) => {
                 }
             })
         } else {
-            mod = require(`./modules/${f}`);
+            mod = require(`${moduleDir}/${f}`);
             if (mod.notCommand) return;
             bot.commands[f.substr(0, f.length - 3)] = mod;
             if (mod.help) {
@@ -64,8 +82,6 @@ fs.readdir('./modules', (err, files) => {
             }
         }
     })
-    console.log(bot.commands);
-    console.log(bot.help);
 })
 
 bot.on('message', msg => {
@@ -79,7 +95,5 @@ bot.on('message', msg => {
 })
 
 process.on("SIGINT", () => {
-    //bot.editStatus('invisible')
-    //bot.disconnect({reconnect: false});
     process.exit(0);
 })
