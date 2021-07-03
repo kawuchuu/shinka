@@ -1,8 +1,5 @@
 const Discord = require('discord.js');
 let bot = new Discord.Client();
-const express = require('express');
-const cors = require('cors');
-const app = express();
 const fs = require('fs');
 const path = require('path');
 bot.isElectron = true;
@@ -25,18 +22,10 @@ if (bot.isElectron && process.env.NODE_ENV === 'development') {
 }
 
 bot.login(require('./config.json').token);
-app.use(express.json({limit: '100kb'}));
-app.use(cors());
-app.listen(64342, err => {
-    if (err) return console.log('Failed to start express server!');
-    console.log('Express server started');
-})
 
 bot.on('ready', () => {
+    require('./server').startServer(bot)
     console.log("connected to discord");
-    app.use('/status', (req, res) => {
-        res.sendStatus(200);
-    });
     bot.user.setActivity('in development uwu', { type: 'PLAYING' });
 })
 
