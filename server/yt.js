@@ -40,7 +40,7 @@ router.put('/play', async (req, res) => {
                         durationDisplay: `${video.duration.minutes}:${video.duration.seconds}`
                     });
                     if (!player.serverQueue[channel.guild.id].np) {
-                        player.play(connection, null, bot, channel);
+                        player.play(connection, null, channel);
                     }
                     console.log(video.durationSeconds);
                 })

@@ -26,7 +26,7 @@ module.exports.run = async (bot, msg) => {
                         durationDisplay: `${video.duration.minutes}:${video.duration.seconds}`
                     });
                     if (!player.serverQueue[msg.member.guild.id].np) {
-                        player.play(connection, msg, bot);
+                        player.play(connection, msg);
                         getMsg.edit(`**Now Playing:** ${results[0].title}`);
                     } else {
                         getMsg.edit(`**Added to queue:** ${results[0].title}`);

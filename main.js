@@ -27,7 +27,8 @@ bot.login(require('./config.json').token);
 
 bot.on('ready', () => {
     if (bot.isElectron || process.argv.indexOf('--useServer') !== -1) {
-        require('./server').startServer(bot)
+        bot.serverEnabled = true
+        require('./server').startServer()
     }
     console.log("connected to discord");
     bot.user.setActivity('in development uwu', { type: 'PLAYING' });

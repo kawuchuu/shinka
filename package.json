@@ -9,13 +9,13 @@
   "author": "kawuchuu",
   "dependencies": {
     "@discordjs/opus": "^0.5.3",
-    "cors": "^2.8.5",
     "discord.js": "^12.5.3",
     "ejs": "^3.1.6",
     "express": "^4.17.1",
     "ffmpeg-static": "^4.4.0",
     "opusscript": "^0.0.8",
     "simple-youtube-api": "^5.2.1",
+    "socket.io": "^4.1.2",
     "ytdl-core": "^4.8.3"
   },
   "devDependencies": {

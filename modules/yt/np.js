@@ -1,6 +1,6 @@
 let player = require('./player');
 
-let timeFormat = s => {
+const timeFormat = s => {
     if (isNaN(s)) return '-:--'
     let min = Math.floor(s / 60);
     let sec = Math.floor(s - (min * 60));
@@ -18,12 +18,12 @@ module.exports.run = async (bot, msg) => {
     if (currentTimePretty == '-:--') progressBar = '░░░░░░░░░░░░░░░░░░░░'
     let progressFill = (dispDuration/npVid.duration) * 20;
     let progressLeft = 20 - progressFill;
-    for (i=0; i < progressFill; i++) {
+    for (let i=0; i < progressFill; i++) {
         progressBar += '█'
     }
-    for (i=0; i < progressLeft; i++) {
+    for (let i=0; i < progressLeft; i++) {
         progressBar += '░'
-    };
+    }
     msg.channel.send({
         embed: {
             title: ":notes:  Now Playing",
