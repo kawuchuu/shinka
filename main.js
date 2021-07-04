@@ -5,6 +5,8 @@ const path = require('path');
 bot.isElectron = true;
 bot.help = {};
 
+module.exports.bot = bot
+
 try {
     console.log(`Testing for Electron: ${require('electron').app.getVersion()}`)
     console.log('Electron appears to be present!')
@@ -24,7 +26,9 @@ if (bot.isElectron && process.env.NODE_ENV === 'development') {
 bot.login(require('./config.json').token);
 
 bot.on('ready', () => {
-    require('./server').startServer(bot)
+    if (bot.isElectron || process.argv.indexOf('--useServer') !== -1) {
+        require('./server').startServer(bot)
+    }
     console.log("connected to discord");
     bot.user.setActivity('in development uwu', { type: 'PLAYING' });
 })

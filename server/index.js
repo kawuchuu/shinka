@@ -2,55 +2,32 @@ const express = require('express');
 const cors = require('cors');
 const app = express();
 
-const player = require('../modules/yt/player');
-const ytapi = require('simple-youtube-api');
-const yt = new ytapi(require('../config.json').ytkey);
+const generateState = () => {
+    if (process.argv.indexOf('--devState') !== -1) return 'dev'
+    let text = ''
+    let characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
+    for (let i = 0; i < 30; i++) {
+        text += characters.charAt(Math.floor(Math.random() * characters.length))
+    }
+    return text
+}
 
-module.exports.startServer = async (bot) => {
+module.exports.startServer = () => {
     app.use(express.json({limit: '100kb'}));
     app.use(cors());
+
+    // to prevent random apps from sending requests. this is not really authentication.
+    app.use((req, res, next) => {
+        if (req.headers.state == app.get('state')) next()
+        else res.sendStatus(401)
+    })
+
+    app.set('state', generateState())
+
+    app.use('/api', require('./router'))
 
     app.listen(64342, 'localhost', err => {
         if (err) return console.log('Failed to start express server!');
         console.log('Express server started');
-    })
-
-    app.put('/yt-play', async (req, res) => {
-        try {
-            const channel = await bot.channels.fetch(req.query.channel)
-            if (channel.type != 'voice') return res.sendStatus(400)
-            const connection = await channel.join()
-            try {
-                yt.searchVideos(req.query.q, 2).then(results => {
-                    if (!player.serverQueue[channel.guild.id]) {
-                        player.serverQueue[channel.guild.id] = {
-                            queue: []
-                        }
-                    }
-                    //so we can get the duration...
-                    yt.getVideoByID(results[0].id).then(video => {
-                        player.serverQueue[channel.guild.id].queue.push({
-                            url: video.url,
-                            title: video.title,
-                            channel: video.channel.title,
-                            channelUrl: video.channel.url,
-                            thumbnail: video.thumbnails.high.url,
-                            duration: parseInt(video.durationSeconds),
-                            durationDisplay: `${video.duration.minutes}:${video.duration.seconds}`
-                        });
-                        if (!player.serverQueue[channel.guild.id].np) {
-                            player.play(connection, null, bot, channel);
-                        }
-                        console.log(video.durationSeconds);
-                    })
-                })
-            } catch(err) {
-                console.log(err)
-                res.sendStatus(500)
-            }
-            res.sendStatus(200)
-        } catch(err) {
-            res.sendStatus(500)
-        }
     })
 }

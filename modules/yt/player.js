@@ -1,7 +1,7 @@
 const ytdl = require('ytdl-core');
 let serverQueue = {np: null};
 
-let play = (connection, msg, bot, channel) => {
+const play = (connection, msg, bot, channel) => {
     let server;
     if (channel) {
         server = serverQueue[channel.guild.id];
