@@ -23,6 +23,25 @@ if (bot.isElectron && process.env.NODE_ENV === 'development') {
     moduleDir = `${require('electron').app.getAppPath()}/shinka/modules`;
 }
 
+const generateState = () => {
+    if (process.argv.indexOf('--devState') !== -1) return 'dev'
+    let text = ''
+    let characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
+    for (let i = 0; i < 30; i++) {
+        text += characters.charAt(Math.floor(Math.random() * characters.length))
+    }
+    return text
+}
+
+bot.state = generateState()
+
+if (bot.isElectron) {
+    const { ipcMain } = require('electron')
+    ipcMain.handle('state', () => {
+        return bot.state
+    })
+}
+
 bot.login(require('./config.json').token);
 
 bot.on('ready', () => {
