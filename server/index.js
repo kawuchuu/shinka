@@ -18,6 +18,10 @@ const io = new Server(http, {
     allowEIO3: true
 })
 
+bot.fetchApplication().then(app => {
+    bot.application = app
+})
+
 module.exports.startServer = () => {
     app.use(express.json({limit: '100kb'}));
 

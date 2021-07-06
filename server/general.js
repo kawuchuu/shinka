@@ -8,7 +8,15 @@ router.get('/bot', (ref, res) => {
         id: bot.user.id,
         uptime: bot.uptime,
         createdAt: bot.user.createdTimestamp,
-        avatar: bot.user.avatar
+        avatar: bot.user.avatar,
+        isPublic: bot.application.botPublic,
+        owner: {
+            username: bot.application.owner.username,
+            discriminator: bot.application.owner.discriminator,
+            avatar: bot.application.owner.avatar,
+            id: bot.application.owner.id,
+            mfaEnabled: bot.user.mfaEnabled
+        }
     })
 })
 
