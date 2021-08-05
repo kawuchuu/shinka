@@ -4,6 +4,7 @@ const fs = require('fs');
 const path = require('path');
 bot.isElectron = true;
 bot.help = {};
+bot.msgAfter = {};
 
 module.exports.bot = bot
 
@@ -50,7 +51,7 @@ bot.on('ready', () => {
         require('./server').startServer()
     }
     console.log("connected to discord");
-    bot.user.setActivity('in development uwu', { type: 'PLAYING' });
+    bot.user.setActivity('yo', { type: 'LISTENING' });
 })
 
 fs.readdir(moduleDir, (err, files) => {
@@ -98,15 +99,25 @@ fs.readdir(moduleDir, (err, files) => {
 })
 
 bot.on('message', msg => {
-    if (!msg.content.startsWith('sh!')) return;
-    let args = msg.content.split(' ').slice(1);
-    let reqCmd = msg.content.split(' ')[0].substr(3);
-    let command = bot.commands[reqCmd];
-    if (command) {
-        command.run(bot, msg, args)
+    if (bot.msgAfter[msg.channel.id] && bot.msgAfter[msg.channel.id][msg.member.user.username]) {
+        const msgAfterCmd = bot.msgAfter[msg.channel.id][msg.member.user.username]
+        const cmd = bot.commands[msgAfterCmd.cmd]
+        if (cmd && cmd[msgAfterCmd.func]) {
+            cmd[msgAfterCmd.func](bot, msg)
+        }
+    } else {
+        if (!msg.content.startsWith('sh!')) return;
+        let args = msg.content.split(' ').slice(1);
+        let reqCmd = msg.content.split(' ')[0].substr(3);
+        let command = bot.commands[reqCmd];
+        if (command) {
+            command.run(bot, msg, args)
+        }
     }
 })
 
-process.on("SIGINT", () => {
+process.on("SIGINT", async () => {
+    console.log('Goodbye!')
+    await bot.user.setStatus('offline')
     process.exit(0);
 })

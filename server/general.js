@@ -20,7 +20,7 @@ router.get('/bot', (ref, res) => {
             mfaEnabled: true
         }
     }
-    if (bot.user.presence.activities) {
+    if (bot.user.presence.activities[0]) {
         botInfo['activity'] = {
             name: bot.user.presence.activities[0].name,
             type: bot.user.presence.activities[0].type
