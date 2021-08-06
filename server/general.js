@@ -10,13 +10,13 @@ router.get('/bot', (ref, res) => {
         uptime: bot.uptime,
         createdAt: bot.user.createdTimestamp,
         avatar: bot.user.avatar,
-        isPublic: bot.application.botPublic,
+        isPublic: bot.acApplication.botPublic,
         status: bot.user.presence.status,
         owner: {
-            username: bot.application.owner.username,
-            discriminator: bot.application.owner.discriminator,
-            avatar: bot.application.owner.avatar,
-            id: bot.application.owner.id,
+            username: bot.acApplication.owner.username,
+            discriminator: bot.acApplication.owner.discriminator,
+            avatar: bot.acApplication.owner.avatar,
+            id: bot.acApplication.owner.id,
             mfaEnabled: true
         }
     }

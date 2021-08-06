@@ -1,7 +1,19 @@
-const Discord = require('discord.js');
-let bot = new Discord.Client();
+const { Client, Intents } = require('discord.js');
 const fs = require('fs');
 const path = require('path');
+
+const gwIntents = new Intents()
+
+gwIntents.add()
+
+let bot = new Client({
+    intents: [
+        Intents.FLAGS.GUILD_MEMBERS,
+        Intents.FLAGS.GUILD_VOICE_STATES,
+        Intents.FLAGS.GUILD_MESSAGES
+    ]
+});
+
 bot.isElectron = true;
 bot.help = {};
 bot.msgAfter = {};
@@ -51,7 +63,7 @@ bot.on('ready', () => {
         require('./server').startServer()
     }
     console.log("connected to discord");
-    bot.user.setActivity('yo', { type: 'LISTENING' });
+    bot.user.setActivity('wahoo discord api v9 migration', { type: 'LISTENING' });
 })
 
 fs.readdir(moduleDir, (err, files) => {
@@ -98,7 +110,7 @@ fs.readdir(moduleDir, (err, files) => {
     })
 })
 
-bot.on('message', msg => {
+/* bot.on('messageCreate', msg => {
     if (bot.msgAfter[msg.channel.id] && bot.msgAfter[msg.channel.id][msg.member.user.username]) {
         const msgAfterCmd = bot.msgAfter[msg.channel.id][msg.member.user.username]
         const cmd = bot.commands[msgAfterCmd.cmd]
@@ -114,6 +126,12 @@ bot.on('message', msg => {
             command.run(bot, msg, args)
         }
     }
+}) */
+
+bot.on('interactionCreate', interaction => {
+    if (!interaction.isCommand()) return;
+    console.log(interaction.options.getString('query'))
+    interaction.reply('done! lol!')
 })
 
 process.on("SIGINT", async () => {

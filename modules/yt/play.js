@@ -42,7 +42,11 @@ module.exports.run = async (bot, msg) => {
 
 module.exports.help = {
     name: 'play',
-    category: 'YouTube',
-    args: '<search query>',
+    options: [{
+        name: 'query',
+        type: 'STRING',
+        description: 'Your search query to YouTube',
+        required: true
+    }],
     desc: 'Plays the first search result in a voice channel'
 }
