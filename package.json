@@ -15,6 +15,7 @@
     "ejs": "^3.1.6",
     "express": "^4.17.1",
     "ffmpeg-static": "^4.4.0",
+    "libsodium-wrappers": "^0.7.9",
     "opusscript": "^0.0.8",
     "simple-youtube-api": "^5.2.1",
     "socket.io": "^4.1.2",

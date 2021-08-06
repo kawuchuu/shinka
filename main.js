@@ -130,8 +130,10 @@ fs.readdir(moduleDir, (err, files) => {
 
 bot.on('interactionCreate', interaction => {
     if (!interaction.isCommand()) return;
-    console.log(interaction.options.getString('query'))
-    interaction.reply('done! lol!')
+    const cmd = bot.commands[interaction.commandName]
+    if (cmd) {
+        cmd.run(bot, interaction)
+    }
 })
 
 process.on("SIGINT", async () => {
