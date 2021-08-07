@@ -110,29 +110,17 @@ fs.readdir(moduleDir, (err, files) => {
     })
 })
 
-/* bot.on('messageCreate', msg => {
-    if (bot.msgAfter[msg.channel.id] && bot.msgAfter[msg.channel.id][msg.member.user.username]) {
-        const msgAfterCmd = bot.msgAfter[msg.channel.id][msg.member.user.username]
-        const cmd = bot.commands[msgAfterCmd.cmd]
-        if (cmd && cmd[msgAfterCmd.func]) {
-            cmd[msgAfterCmd.func](bot, msg)
-        }
-    } else {
-        if (!msg.content.startsWith('sh!')) return;
-        let args = msg.content.split(' ').slice(1);
-        let reqCmd = msg.content.split(' ')[0].substr(3);
-        let command = bot.commands[reqCmd];
-        if (command) {
-            command.run(bot, msg, args)
-        }
-    }
-}) */
-
 bot.on('interactionCreate', interaction => {
-    if (!interaction.isCommand()) return;
-    const cmd = bot.commands[interaction.commandName]
-    if (cmd) {
-        cmd.run(bot, interaction)
+    if (interaction.isCommand()) {
+        const cmd = bot.commands[interaction.commandName]
+        if (cmd) {
+            cmd.run(bot, interaction)
+        }
+    } else if (interaction.isSelectMenu()) {
+        const cmd = bot.commands[interaction.message.interaction?.name]
+        if (cmd) {
+            cmd[interaction.customId](bot, interaction)
+        }
     }
 })
 

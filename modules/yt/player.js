@@ -1,10 +1,15 @@
+/* 
+    Please excuse shit code. This will be rewritten eventually.
+*/
+
 const { raw } = require('youtube-dl-exec');
 //const { bot } = require('../../main')
-const { getVoiceConnection, createAudioPlayer, createAudioResource, demuxProbe } = require('@discordjs/voice')
+const { getVoiceConnection, createAudioPlayer, createAudioResource, demuxProbe, AudioPlayerStatus } = require('@discordjs/voice')
 let serverQueue = {np: null};
 
 const play = (msg) => {
     const server = serverQueue[msg.guild.id]
+    server.np = server.queue[0]
     const connection = getVoiceConnection(msg.guild.id)
     const player = createAudioPlayer()
     player.on('error', err => {
@@ -22,6 +27,21 @@ const play = (msg) => {
             let resource = createAudioResource(probe.stream)
             player.play(resource)
             connection.subscribe(player)
+            player.on('stateChange', (oldState, newState) => {
+                if (newState.status == AudioPlayerStatus.Idle && oldState.status != AudioPlayerStatus.Idle) {
+                    if (server.queue.length == 0) {
+                        console.log('doing your mom')
+                        connection.destroy()
+                        connection.disconnect()
+                    } else {
+                        console.log('whata asda')
+                        play(msg)
+                    }
+                } else {
+                    console.log('excuse mee young man')
+                    console.log(newState.status, oldState.status, AudioPlayerStatus.Idle)
+                }
+            })
         }).catch(err => {
             if (!streamProcess.killed) process.kill()
             stream.resume()

@@ -1,14 +1,12 @@
 //api used: nekos.life
 const {get} = require('https');
 const endpoints = require('./endpoints.json');
+const { MessageActionRow, MessageSelectMenu } = require('discord.js')
 
-module.exports.run = async (bot, msg, args) => {
-    let base = 'https://nekos.life/api/v2';
-    let argIndex = 0;
-    if (!endpoints[args[argIndex]]) return msg.channel.send('Not a valid image type!');
-    let editMsg = await msg.channel.send('Fetching awesome image...');
-    let getURL = await new Promise((resolve, reject) => {
-        get(`${base}${endpoints[args[argIndex]]}`, res => {
+const sendImgRequest = async (msg, type) => {
+    const base = 'https://nekos.life/api/v2';
+    const getURL = await new Promise((resolve, reject) => {
+        get(`${base}${endpoints[type]}`, res => {
             if (res.statusCode != 200) {
                 res.resume();
                 reject(`Failed with code: ${res.statusCode}`);
@@ -30,12 +28,47 @@ module.exports.run = async (bot, msg, args) => {
             reject(`Error: ${err.message}`);
         });
     });
-    editMsg.edit(getURL);
+    return await getURL
+}
+
+module.exports.run = async (bot, msg) => {
+    if (msg.options.getString('type') && !endpoints[msg.options.getString('type')]) {
+        return msg.reply('Not a valid image type!');
+    } else if (!msg.options.getString('type')) {
+        let types = []
+        Object.keys(endpoints).forEach(f => {
+            types.push({
+                label: f,
+                value: f
+            })
+        })
+        const row = new MessageActionRow()
+            .addComponents(
+                new MessageSelectMenu()
+                    .setCustomId('selectedType')
+                    .setPlaceholder('Select image type')
+                    .addOptions(types)
+            )
+        return await msg.reply({ content: 'Please select an image type:', components: [row] })
+    }
+    await msg.reply('Fetching awesome image...');
+    const getURL = await sendImgRequest(msg, msg.options.getString('type'))
+    msg.editReply(getURL);
+}
+
+module.exports.selectedType = async (bot, msg) => {
+    await msg.update({ content: 'Fetching awesome image...', components: [] });
+    const getURL = await sendImgRequest(msg, msg.values[0])
+    msg.editReply(getURL)
 }
 
 module.exports.help = {
     name: 'animeimg',
-    category: 'Fun',
     desc: 'Sends a nice little anime image!',
-    args: '[<type>]'
+    options: [{
+        name: 'type',
+        type: 'STRING',
+        description: 'The image type',
+        required: false
+    }]
 }

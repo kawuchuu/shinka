@@ -1,6 +1,6 @@
 let player = require('./player');
 
-const timeFormat = s => {
+/* const timeFormat = s => {
     if (isNaN(s)) return '-:--'
     let min = Math.floor(s / 60);
     let sec = Math.floor(s - (min * 60));
@@ -8,11 +8,11 @@ const timeFormat = s => {
         sec = `0${sec}`;
     }
     return `${min}:${sec}`;
-}
+} */
 
 module.exports.run = async (bot, msg) => {
     let npVid = player.serverQueue[msg.member.guild.id].np;
-    let dispDuration = player.serverQueue[msg.member.guild.id].dispatcher.totalStreamTime / 1000;
+    /* let dispDuration = player.serverQueue[msg.member.guild.id].dispatcher.totalStreamTime / 1000;
     let progressBar = '';
     let currentTimePretty = timeFormat(dispDuration);
     if (currentTimePretty == '-:--') progressBar = '░░░░░░░░░░░░░░░░░░░░'
@@ -23,9 +23,9 @@ module.exports.run = async (bot, msg) => {
     }
     for (let i=0; i < progressLeft; i++) {
         progressBar += '░'
-    }
-    msg.channel.send({
-        embed: {
+    } */
+    msg.reply({
+        embeds: [{
             title: ":notes:  Now Playing",
             color: 0xff0000,
             fields: [
@@ -42,15 +42,15 @@ module.exports.run = async (bot, msg) => {
                     name: 'Link',
                     value: npVid.url
                 },
-                {
+                /* {
                     name: 'Progress',
                     value: `${currentTimePretty} - ${progressBar} - ${npVid.durationDisplay}`
-                }
+                } */
             ],
             thumbnail: {
                 url: npVid.thumbnail
             }
-        }
+        }]
     })
 }
 
