@@ -12,13 +12,14 @@ const play = (msg) => {
     server.np = server.queue[0]
     const connection = getVoiceConnection(msg.guild.id)
     const player = createAudioPlayer()
+    server.player = player
     player.on('error', err => {
         console.error(err)
     })
     const streamProcess = raw(server.queue[0].url, {
         o: '-',
         q: '',
-        f: 'bestaudio[ext=webm+acodec=opus+asr=48000]/bestaudio',
+        f: 'bestaudio[ext=webm+acodec=opus+asr=48000]/worst',
         r: '100K'
     })
     const stream = streamProcess.stdout
@@ -30,15 +31,13 @@ const play = (msg) => {
             player.on('stateChange', (oldState, newState) => {
                 if (newState.status == AudioPlayerStatus.Idle && oldState.status != AudioPlayerStatus.Idle) {
                     if (server.queue.length == 0) {
-                        console.log('doing your mom')
+                        delete serverQueue[msg.guild.id]
                         connection.destroy()
                         connection.disconnect()
                     } else {
-                        console.log('whata asda')
                         play(msg)
                     }
                 } else {
-                    console.log('excuse mee young man')
                     console.log(newState.status, oldState.status, AudioPlayerStatus.Idle)
                 }
             })
@@ -47,6 +46,11 @@ const play = (msg) => {
             stream.resume()
             console.log(err)
         })
+    })
+    streamProcess.on('error', err => {
+        console.error(err)
+        connection.destroy()
+        connection.disconnect()
     })
     server.queue.shift()
 }

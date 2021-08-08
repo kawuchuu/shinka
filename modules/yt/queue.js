@@ -1,8 +1,9 @@
 let player = require('./player');
 
 module.exports.run = async (bot, msg) => {
-    let np = player.serverQueue[msg.member.guild.id].np;
-    let queue = player.serverQueue[msg.member.guild.id].queue;
+    if (!player.serverQueue[msg.guild.id]) return msg.reply('No queue exists for this server!')
+    let np = player.serverQueue[msg.guild.id].np;
+    let queue = player.serverQueue[msg.guild.id].queue;
     let queueList = 'Nothing left in the queue!';
     if (queue.length != 0) {
         queueList = '';
@@ -10,8 +11,8 @@ module.exports.run = async (bot, msg) => {
             queueList += `${i + 1}. ${f.title}\n`;
         })
     }
-    msg.channel.send({
-        embed: {
+    await msg.reply({
+        embeds: [{
             title: ':notepad_spiral:  Queue',
             color: 0xff0000,
             fields: [
@@ -24,12 +25,11 @@ module.exports.run = async (bot, msg) => {
                     value: queueList
                 }
             ]
-        }
+        }]
     })
 }
 
 module.exports.help = {
     name: 'queue',
-    category: 'YouTube',
     desc: "Displays the server's YouTube queue"
 }

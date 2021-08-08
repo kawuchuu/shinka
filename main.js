@@ -63,7 +63,7 @@ bot.on('ready', () => {
         require('./server').startServer()
     }
     console.log("connected to discord");
-    bot.user.setActivity('wahoo discord api v9 migration', { type: 'LISTENING' });
+    bot.user.setActivity('wahoo discord api v9 migration', { type: 'PLAYING' });
 })
 
 fs.readdir(moduleDir, (err, files) => {
@@ -126,6 +126,7 @@ bot.on('interactionCreate', interaction => {
 
 process.on("SIGINT", async () => {
     console.log('Goodbye!')
-    await bot.user.setStatus('offline')
+    bot.user.setStatus('offline')
+    bot.destroy()
     process.exit(0);
 })

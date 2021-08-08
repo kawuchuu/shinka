@@ -1,10 +1,16 @@
 let player = require('./player');
 
 module.exports.run = async (bot, msg) => {
-    let upNext = player.serverQueue[msg.member.guild.id].queue[0];
-    if (!upNext) return msg.channel.send('Nothing up next!');
-    msg.channel.send({
-        embed: {
+    const queue = player.serverQueue[msg.guild.id];
+    let upNext;
+    if (!queue) {
+        upNext = null
+    } else {
+        upNext = queue.queue[0]
+    }
+    if (!upNext) return msg.reply('Nothing up next!');
+    msg.reply({
+        embeds: [{
             title: ":track_next:  Up Next",
             color: 0xff0000,
             fields: [
@@ -24,12 +30,11 @@ module.exports.run = async (bot, msg) => {
             thumbnail: {
                 url: upNext.thumbnail
             }
-        }
+        }]
     })
 }
 
 module.exports.help = {
     name: 'upnext [un]',
-    category: 'YouTube',
     desc: 'Displays info about the video next in queue'
 }
