@@ -16,9 +16,9 @@ module.exports.run = async (bot, msg) => {
                     value: `Channel: ${video.channel.title}\n[Watch Video](${video.url})`
                 })
                 selectFields.push({
-                    label: `${video.title}`,
+                    label: `${video.title}`.substr(0, 100),
                     value: video.id,
-                    description: `${video.channel.title}`
+                    description: `${video.channel.title}`.substr(0, 100)
                 })
             })
             const searchSelectMenu = new MessageActionRow()

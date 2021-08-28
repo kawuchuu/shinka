@@ -4,14 +4,15 @@
   "description": "an experimental discord bot",
   "main": "index.js",
   "scripts": {
-    "rebuild-opus": "electron-rebuild -v 13.1 -w @discordjs/opus"
+    "start": "node main.js",
+    "dev": "nodemon main.js --useServer --devState"
   },
   "author": "kawuchuu",
   "dependencies": {
     "@discordjs/opus": "^0.5.3",
     "@discordjs/voice": "^0.5.5",
     "cors": "^2.8.5",
-    "discord.js": "^13.0.0",
+    "discord.js": "^13.1.0",
     "ejs": "^3.1.6",
     "express": "^4.17.1",
     "ffmpeg-static": "^4.4.0",
@@ -21,8 +22,5 @@
     "socket.io": "^4.1.2",
     "youtube-dl-exec": "^1.2.4",
     "ytdl-core": "^4.9.1"
-  },
-  "devDependencies": {
-    "electron-rebuild": "^2.3.5"
   }
 }
