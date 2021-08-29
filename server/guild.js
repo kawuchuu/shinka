@@ -9,7 +9,7 @@ router.get('/', async (req, res) => {
             id: guild.id,
             icon: guild.icon,
             memberCount: guild.memberCount,
-            joinedTimestamp: guild.joinedTimestamp
+            joinedTimestamp: guild.createdTimestamp
         })
     } else {
         const guilds = await bot.guilds.fetch()
@@ -33,7 +33,7 @@ router.get('/:id', (req, res) => {
             id: guild.id,
             icon: guild.icon,
             memberCount: guild.memberCount,
-            joinedTimestamp: guild.joinedTimestamp
+            joinedTimestamp: guild.createdTimestamp
         })
     } catch(err) {
         res.sendStatus(500)
@@ -50,7 +50,8 @@ router.get('/:id/members', async (req, res) => {
             discrim: member.user.discriminator,
             id: member.user.id,
             avatar: member.user.avatar,
-            nick: member.nickname
+            nick: member.nickname,
+            displayColour: member.displayHexColor
         }
     })
     res.send(membersToSend)
