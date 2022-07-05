@@ -9,7 +9,7 @@
   },
   "author": "kawuchuu",
   "dependencies": {
-    "@discordjs/opus": "^0.5.3",
+    "@discordjs/opus": "^0.8.0",
     "@discordjs/voice": "^0.5.5",
     "cors": "^2.8.5",
     "discord.js": "^13.1.0",
